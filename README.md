@@ -9,3 +9,9 @@
    2. In the `Program/Script`, add the python interpreter or executable path. This will handle our script based on python.
    3. In the `Add arguments (optional)`, add the `main.py` as the value
    4. Lastly, in the `Start in (optional)`, add the path where the `main.py` is located.
+
+# Screenshot from `Triggers` tab config
+![Triggers](./triggers.png)
+
+# Screenshot from `Actions` tab config
+![Actions](./actions.png)
