@@ -27,7 +27,7 @@ logging.basicConfig(
 
 
 def create_timesheet_entry():
-    holidays = get_holidays()
+    (holidays, user_key) = get_holidays()
 
     now = datetime.datetime.now()
     date = now.strftime("%Y-%m-%d")
@@ -58,7 +58,7 @@ def create_timesheet_entry():
             "workingTime": 480,
             "comment": ""
         }],
-        "userKey": EMAIL
+        "userKey": user_key
     }
     headers = {"Content-Type": "application/json"}
 
@@ -110,7 +110,7 @@ def get_holidays():
     # Check if the request was successful
     if response.status_code == 200:
         logging.info(f"Successfully retrieved holidays for {first_day} - {last_day} date range...")
-        return response.json()
+        return response.json(), user_key
     else:
         logging.info(f"Failed to retrieve holidays for {first_day} - {last_day} date range...")
         logging.debug(f"Status code: {response.status_code}")
