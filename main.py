@@ -66,9 +66,9 @@ def create_timesheet_entry():
 
     # Check if the request was successful
     if response.status_code == 200:
-        logging.info(f"Successfully created a timesheet entry for {date}")
+        logging.info(f"Successfully created a timesheet entry for {date}...")
     else:
-        logging.error(f"Failed to create a timesheet entry for {date}")
+        logging.error(f"Failed to create a timesheet entry for {date}...")
         logging.debug(f"Status code: {response.status_code}")
         logging.debug(f"Response: {response.text}")
 
@@ -85,20 +85,34 @@ def get_first_and_last_day_of_the_month():
 
     return first_day_of_month, last_day_of_month
 
-
-def get_holidays():
-    (first_day, last_day) = get_first_and_last_day_of_the_month()
-    logging.info(f"Retrieving list of holidays for {first_day} - {last_day} date range")
-    api_url = f"https://issues.mycollab.co/rest/com.easesolutions.jira.plugins.timesheet/latest/timesheet/holidays" \
-              f"/{EMAIL}/{first_day}/{last_day}"
+def get_myself():
+    api_url = f"https://issues.mycollab.co/rest/api/2/myself"
     response = requests.get(api_url, auth=HTTPBasicAuth(EMAIL, PASSWORD))
 
     # Check if the request was successful
     if response.status_code == 200:
-        logging.info(f"Successfully retrieved holidays for {first_day} - {last_day} date range")
+        logging.info(f"Successfully retrieved current user info...")
         return response.json()
     else:
-        logging.info(f"Failed to retrieve holidays for {first_day} - {last_day} date range")
+        logging.info(f"Failed to retrieve current user info...")
+        logging.debug(f"Status code: {response.status_code}")
+        logging.debug(f"Response: {response.text}")
+
+
+def get_holidays():
+    user_key = get_myself()["key"]
+    (first_day, last_day) = get_first_and_last_day_of_the_month()
+    logging.info(f"Retrieving list of holidays for {first_day} - {last_day} date range")
+    api_url = f"https://issues.mycollab.co/rest/com.easesolutions.jira.plugins.timesheet/latest/timesheet/holidays" \
+              f"/{user_key}/{first_day}/{last_day}"
+    response = requests.get(api_url, auth=HTTPBasicAuth(EMAIL, PASSWORD))
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        logging.info(f"Successfully retrieved holidays for {first_day} - {last_day} date range...")
+        return response.json()
+    else:
+        logging.info(f"Failed to retrieve holidays for {first_day} - {last_day} date range...")
         logging.debug(f"Status code: {response.status_code}")
         logging.debug(f"Response: {response.text}")
 
