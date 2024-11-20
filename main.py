@@ -90,7 +90,7 @@ def show_missing_timesheet_entries(date, user_key, holidays, leaves):
     text = f"You have {len(missing_timesheet_entries)} missing timesheet entries..."
     details = "\n".join([f"No timesheet entry found in {x}" for x in missing_timesheet_entries])
 
-    send_email(details)
+    send_email(text, details)
     create_dialog(title, text, details, user_key, holidays, leaves, missing_timesheet_entries)
 
 
@@ -312,7 +312,7 @@ def create_dialog(title, text, details, user_key, holidays, leaves, missing_entr
     root.mainloop()
 
 
-def send_email(details):
+def send_email(text, details):
     # Create the message
     msg = MIMEMultipart()
     msg["From"] = EMAIL
@@ -320,7 +320,7 @@ def send_email(details):
     msg["Subject"] = "Missing Timesheet Entries"
 
     # Add the body of the email
-    body = details
+    body = f"{text}\n\n" + details
     msg.attach(MIMEText(body, "plain"))
 
     try:
