@@ -40,8 +40,8 @@ def init():
     holidays = get_holidays(user_key)
     leaves = get_leaves(user_key)
 
+    create_timesheet_entry(date, user_key, holidays, leaves)
     show_missing_timesheet_entries(date, user_key, holidays, leaves)
-    # create_timesheet_entry(date, user_key, holidays, leaves)
 
 
 def get_working_days(user_key):
